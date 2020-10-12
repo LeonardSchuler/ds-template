@@ -101,9 +101,14 @@ celerybeat.pid
 # SageMath parsed files
 *.sage.py
 
+# Editor
+.swp
+.swo
+
 # Environments
 .env
 .venv
+.activate_conda_env
 env/
 venv/
 ENV/

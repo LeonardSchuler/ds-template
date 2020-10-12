@@ -15,6 +15,7 @@ dependencies:
   - pre-commit
   - pip
   - pytest
+  - python-dotenv
   - scipy
   - scikit-learn
   - seaborn
