@@ -4,12 +4,15 @@ channels:
   - conda-forge
 dependencies:
   - black
-  - python
   - cookiecutter
+  - dask
+  - flake8
   - ipython
   - jupyter
   - jupyterlab
   - matplotlib
+  - mypy
+  - nodejs
   - numpy
   - pandas
   - pre-commit
