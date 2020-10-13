@@ -1,2 +1,12 @@
-version: "3.8"
+version: "3"
 services:
+    airflow:
+        image: "apache/airflow"
+        ports:
+            - "8000:8000"
+
+    db:
+        image: postgres
+        restart: always
+        environment:
+            POSTGRES_PASSWORD: example
