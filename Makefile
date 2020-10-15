@@ -33,4 +33,6 @@ pre-commit:
 	echo "conda activate $(CONDAENVNAME)" >> .activate_conda_env
 
 .env:
-	touch .env
+	mkdir ENV
+	touch ENV/.env
+	ln -s ENV/.env .env
