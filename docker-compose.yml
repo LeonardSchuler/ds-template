@@ -2,6 +2,7 @@ version: "3"
 services:
     airflow-web:
         image: "apache/airflow:1.10.12-python3.7"
+        env_file: ENV/.local_env
         ports:
             - "8000:8000"
 

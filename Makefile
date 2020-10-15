@@ -34,5 +34,5 @@ pre-commit:
 
 .env:
 	mkdir ENV
-	touch ENV/.env
-	ln -s ENV/.env .env
+	touch ENV/.local_env
+	ln -s ENV/.local_env .env
