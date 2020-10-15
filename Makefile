@@ -51,6 +51,7 @@ rm-airflow:
 
 airflow: .local_deployment
 	docker-compose up -d
+	xdg-open http://www.localhost:8080/admin/
 
 stop-airflow:
 	docker-compose down
