@@ -38,15 +38,15 @@ pre-commit:
 	ln -s ENV/local/.env .env
 
 .local_deployment:
-	mkdir .local_deployment/
-	mkdir -p .local_deployment/airflow/logs
-	mkdir -p .local_deployment/postgres/data
-	chmod -vR 700 .local_deployment/airflow
-	chmod -vR 700 .local_deployment/postgres
+	mkdir -p .local_deployment/docker_volumes
+	mkdir -p .local_deployment/docker_volumes/airflow/logs
+	mkdir -p .local_deployment/docker_volumes/postgres/data
+	chmod -vR 700 .local_deployment/docker_volumes/airflow
+	chmod -vR 700 .local_deployment/docker_volumes/postgres
 	# 50000 is the default user in the airflow image and 999 the postgres user
-	sudo chown -vR 50000:50000 .local_deployment/airflow && sudo chown -vR 999:999 .local_deployment/postgres
+	sudo chown -vR 50000:50000 .local_deployment/docker_volumes/airflow && sudo chown -vR 999:999 .local_deployment/docker_volumes/postgres
 
-rm-airflow:
+rm-airflow: stop-airflow
 	sudo rm -vfR .local_deployment
 
 airflow: .local_deployment
