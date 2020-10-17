@@ -41,6 +41,7 @@ pre-commit:
 	ln -s ENV/local/.env .env
 
 install-services: clean
+	mkdir .deployment
 	for SERVICE in $(SERVICES); do \
 		echo "Installing $$SERVICE"; \
 		cd .deployment/ && git clone $$SERVICE; \
@@ -65,4 +66,4 @@ clean-services: stop-services
 	done
 
 clean:
-	sudo rm -fR .deployment/*/
+	sudo rm -fR .deployment
