@@ -1,4 +1,4 @@
-.PHONY: all conda-env describe-env pre-commit test rm-conda-env rm-airflow airflow stop-airflow
+.PHONY: all clean conda-env deployment describe-env install-services pre-commit start-services stop-services test rm-conda-env
 
 
 CONDABASEDIR = $(shell conda info --base)
@@ -8,9 +8,12 @@ CONDAENVFILENAME = environment.yml
 CONDAENVNAME := $(shell grep name $(CONDAENVFILENAME) | head -n 1 | cut -d " " -f 2)
 CONDAENVBINDIR = $(CONDABASEDIR)/envs/$(CONDAENVNAME)/bin
 
+SERVICES ?= https://github.com/LeonardSchuler/docker-compose-airflow
+
 # $(CONDAENV) for using the variable
 
-all : conda-env pre-commit .activate_conda_env .env .local_deployment airflow
+all : conda-env pre-commit .activate_conda_env .env install-services
+
 
 conda-env: .activate_conda_env
 	conda env remove -n $(CONDAENVNAME)
@@ -37,21 +40,29 @@ pre-commit:
 	touch ENV/local/.env
 	ln -s ENV/local/.env .env
 
-.local_deployment:
-	mkdir -p .local_deployment/docker_volumes
-	mkdir -p .local_deployment/docker_volumes/airflow/logs
-	mkdir -p .local_deployment/docker_volumes/postgres/data
-	chmod -vR 700 .local_deployment/docker_volumes/airflow
-	chmod -vR 700 .local_deployment/docker_volumes/postgres
-	# 50000 is the default user in the airflow image and 999 the postgres user
-	sudo chown -vR 50000:50000 .local_deployment/docker_volumes/airflow && sudo chown -vR 999:999 .local_deployment/docker_volumes/postgres
+install-services: clean
+	for SERVICE in $(SERVICES); do \
+		echo "Installing $$SERVICE"; \
+		cd .deployment/ && git clone $$SERVICE; \
+	done
 
-rm-airflow: stop-airflow
-	sudo rm -vfR .local_deployment
+start-services:
+	for SERVICE in $(shell ls -d .deployment/*/); do \
+		echo "Starting $$SERVICE"; \
+		cd $$SERVICE  && make start; \
+	done
 
-airflow: .local_deployment
-	docker-compose up -d
-	xdg-open http://www.localhost:8080/admin/
+stop-services:
+	for SERVICE in $(shell ls -d .deployment/*/); do \
+		echo "Stopping $$SERVICE"; \
+		cd $$SERVICE  && make stop; \
+	done
 
-stop-airflow:
-	docker-compose down
+clean-services: stop-services
+	for SERVICE in $(shell ls -d .deployment/*/); do \
+		echo "Delete data of $$SERVICE"; \
+		cd $$SERVICE  && make clean; \
+	done
+
+clean:
+	sudo rm -fR .deployment/*/
