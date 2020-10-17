@@ -11,10 +11,11 @@ make
 
 
 # Local deployment
+## Run the local deployment
 ````
-docker-compose up
+make airflow
 ````
-creates a Postgres container and an Airflow Webserver container.
+creates a Postgres container for Airflow metadata and an Airflow Webserver container to run your DAGs.
 
 ## Resource Usage
 I tested the resource usage on an Intel(R) Core(TM) i3-5005U CPU with a frequency of 2.00GHz under Kubuntu 18.04 LTS and kernel 4.15.0-121-generic.
