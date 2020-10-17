@@ -105,8 +105,8 @@ celerybeat.pid
 *.sage.py
 
 # Editor
-.swp
-.swo
+*.swp
+*.swo
 
 # Environments
 .env
